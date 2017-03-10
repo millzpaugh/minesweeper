@@ -37,5 +37,7 @@ class TestMine(unittest.TestCase):
                             ['X', 0, 0, 'X'],
                             [0, 'X', 'X', 0]]
         self.board.count_neighbor_mine_cells((1, 1))
+        self.board.count_neighbor_mine_cells((2, 3))
 
         self.assertEqual(self.board.board[1][1], 5)
+        self.assertEqual(self.board.board[2][3], 2)
