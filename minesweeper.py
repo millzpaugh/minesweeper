@@ -34,6 +34,10 @@ class Board():
 
     def generate_range_constraints(self, cell):
         row, column = cell
+
+        if row >= self.height or column >=self.width:
+            raise ValueError("Cell is out of range")
+
         if row == 0:
             row_min = row
         else:

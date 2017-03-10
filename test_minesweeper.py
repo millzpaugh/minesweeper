@@ -25,8 +25,12 @@ class TestMine(unittest.TestCase):
 
     def test_generate_range_constraints(self):
         row_range, column_range = self.board.generate_range_constraints((1, 2))
+
         self.assertEqual(row_range, (0, 3))
         self.assertEqual(column_range, (1, 4))
+
+        with self.assertRaises(ValueError):
+            self.board.generate_range_constraints((7, 10))
 
     def test_count_neighbor_cells(self):
         self.board.board = [['X', 0, 'X', 0],
