@@ -24,13 +24,10 @@ class Board():
 
         while total_mines < self.number_of_mines:
             row, column = self.generate_random_cell()
-            flag = self.board[row][column]
 
-            if flag == 0:
+            if self.board[row][column] == 0:
                 self.board[row][column] = "X"
                 total_mines += 1
-            else:
-                continue
 
     def generate_range_constraints(self, cell):
         row, column = cell
@@ -38,41 +35,23 @@ class Board():
         if row >= self.height or column >= self.width:
             raise ValueError("Cell is out of range")
 
-        if row == 0:
-            row_min = row
-        else:
-            row_min = row - 1
+        row_min = max(0, row - 1)
+        column_min = max(0, column-1)
 
-        if column == 0:
-            column_min = column
-        else:
-            column_min = column - 1
+        row_max = min(row+2, self.height)
+        column_max = min(column+2, self.width)
 
-        if row == self.height-1:
-            row_max = row + 1
-        else:
-            row_max = row + 2
-
-        if column == self.width-1:
-            column_max = column + 1
-        else:
-            column_max = column + 2
-
-        column_range = (column_min, column_max)
-        row_range = (row_min, row_max)
-        return row_range, column_range
+        return (row_min, row_max), (column_min, column_max)
 
     def count_neighbor_mine_cells(self, origin_cell):
         if self.board[origin_cell[0]][origin_cell[1]] != "X":
             row_range, column_range = self.generate_range_constraints(
                 origin_cell)
-            cells = []
+            mine_count = 0
             for r in range(row_range[0], row_range[1]):
                 for i in range(column_range[0], column_range[1]):
-                    cell = self.board[r][i]
-                    if cell != origin_cell:
-                        cells.append(cell)
-            mine_count = cells.count("X")
+                    if self.board[r][i] == "X":
+                        mine_count += 1
 
             self.board[origin_cell[0]][origin_cell[1]] = mine_count
 
